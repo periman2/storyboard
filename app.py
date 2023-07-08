@@ -3,6 +3,7 @@ import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
+import time
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -42,17 +43,24 @@ app.layout = html.Div([
             ),
         ], id='input-options'),
 
-        dbc.Button("Generate", color="primary", id='generate-button', className="m-3"),
+        dbc.Button("Generate", color="primary", id='generate-button', className="m-3", disabled=True),
 
         dcc.Download(id="download-result"),
 
         dbc.Button("Download Result", color="primary", id='download-button', className="m-3"),
+
+        dbc.Progress(id='upload-progress', value=0, max=100, style={'width': '100%'}),
+
+        dbc.Progress(id='generation-progress', value=0, max=100, style={'width': '100%'}),
+        dcc.Interval(id='generation-interval', interval=2000, n_intervals=0),
     ], className="d-flex flex-column align-items-center", style={'border': '1px solid', 'padding': '20px', 'border-radius': '15px'})
 ])
 
 # Update Output
 @app.callback(
     Output('file-upload-content', 'children'),
+    Output('upload-progress', 'value'),
+    Output('generate-button', 'disabled'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
     State('upload-data', 'last_modified')
@@ -62,7 +70,10 @@ def update_output(contents, filenames, last_modified):
         os.makedirs('temp')
 
     if contents is not None:
+        total_files = len(contents)
+        uploaded_files = 0
         file_contents = []
+
         for content, filename, date in zip(contents, filenames, last_modified):
             if content is not None:
                 # Save the file to a temporary location
@@ -72,35 +83,51 @@ def update_output(contents, filenames, last_modified):
                     f.write(data)
 
                 file_contents.append(html.P(filename))
+                uploaded_files += 1
+
+        upload_progress = int(uploaded_files / total_files * 100) if total_files > 0 else 0
 
         if file_contents:
-            return file_contents
+            return file_contents, upload_progress, False  # Enable the Generate button
 
-    return 'No files uploaded.'
+    return 'No files uploaded.', 0, True  # Disable the Generate button
 
+# Generation Progress
+total_progress = 0  # Store total progress outside the callback context
 
-
-# Backend Function call
 @app.callback(
-    Output('download-button', 'color'),
-    Output('download-result', 'data'),
-    Input('generate-button', 'n_clicks'),
-    State('genre-dropdown', 'value')
+    Output('generation-progress', 'value'),
+    Output('generation-progress', 'children'),
+    Input('generation-interval', 'n_intervals'),
+    State('generate-button', 'n_clicks')
 )
-def run_backend(n_clicks, dropdown_value):
-    if n_clicks is None:
-        return 'primary', None
-    else:
-        # Call your backend function here
-        # Placeholder code to simulate backend processing
-        import time
-        time.sleep(5)
-        
-        # Simulate generating a result
-        result = {'story': 'This is a test story.'}
-        
+def update_generation_progress(n_intervals, n_clicks):
+    global total_progress
+
+    if n_clicks:
+        if total_progress < 100:
+            time.sleep(1)  # Simulate delay
+            total_progress += 10
+
+        return total_progress, f'{total_progress}%'
+    
+    return 0, ''
+
+# Download Result
+@app.callback(
+    Output('download-result', 'data'),
+    Input('download-button', 'n_clicks'),
+    State('generation-progress', 'value')
+)
+def download_result(n_clicks, generation_progress):
+    if n_clicks and generation_progress == 100:
+        # Placeholder code to simulate the generated story
+        story = "This is the generated story."
+
         # Return the result for download
-        return 'success', dict(content=result['story'], filename='result.txt')
+        return dict(content=story, filename='result.txt')
+
+    return None
 
 if __name__ == '__main__':
     app.run_server(debug=True)
