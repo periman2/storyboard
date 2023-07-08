@@ -25,15 +25,6 @@ The code consists of several key components:
 
 4. **Download Result:** The `download_result` function simulates downloading the generated story. When the 'Download Result' button is clicked, and the story generation progress is complete, it returns a placeholder string as the content of the generated story.
 
-## How to Run
-
-1. Ensure you have Python 3 and the required libraries installed. 
-2. Clone or download this repository.
-3. Navigate to the project directory and run the following command in your terminal:
-    ```bash
-    python main.py
-    ```
-4. Open a web browser and navigate to `http://127.0.0.1:8050/` to view the app.
 
 ## Note
 This application is currently a front-end prototype and doesn't actually generate a story based on the input files and genre. The file upload, progress tracking, and result download features are functional, but the story generation is simulated. The backend logic for story generation will need to be added to the `update_generation_progress` and `download_result` functions.
