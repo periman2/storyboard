@@ -10,97 +10,55 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 ## App Layout
 app.layout = html.Div([
     html.Div([
-        # Upload Files element
-        dcc.Upload(
-            id='upload-data',
-            children=html.Div([
-                'Drag and Drop or ',
-                html.A('Select Files')
-            ]),
-            style={
-                'width': '100%',
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '1px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '10px'
-            },
-            multiple=True
-        ),
-        # Uploaded Files or 'no files uploaded' text
-        html.Div(id='file-upload-content'),
-        # Upload progress bar
-        dbc.Progress(id='upload-progress', 
-                     value=0, 
-                     max=100, 
-                     style={
-                         'width': '75%',
-                         'textAlign': 'center'
-                         }
-                     ),
-        
-        # Additional Inputs
         html.Div([
-            # Genre Dropdown
-            dcc.Dropdown(
-                id='genre-dropdown',
-                options=[
-                    {'label': 'Horror', 'value': 'horror'},
-                    {'label': 'Fantasy', 'value': 'fantasy'},
-                    {'label': 'Romance', 'value': 'romance'},
-                    # Add more genres as needed
-                ],
-                placeholder="Select a genre",
-                style={'width': '200px'}
+            # Upload Files element
+            dcc.Upload(
+                id='upload-data',
+                children=html.Div([
+                    'Drag and Drop or ',
+                    html.A('Select Files')
+                ]),
+                className='upload-data',
+                multiple=True
             ),
-        ], id='input-options'),
-        
-        # Generate Story Button
-        dbc.Button(
-            "Generate Story", 
-            color="primary", 
-            id='generate-button', 
-            className="m-3", 
-            disabled=True
-            ),
-        
-        #Download Result
-        dcc.Download(id="download-result"),
-        
-        # Download Result Button
-        dbc.Button(
-            "Download Result", 
-            color="primary", 
-            id='download-button', 
-            className="m-3"
-            ),
-        
-        # Generation Progress bar
-        dbc.Progress(id='generation-progress', 
-                     value=0,
-                     max=100, 
-                     style={
-                         'width': '75%',
-                         'textAlign': 'center'
-                         }
-                     ),
-        # Fakeing the progress at the moment (i think)
-        dcc.Interval(id='generation-interval', 
-                     interval=2000, 
-                     n_intervals=0
-                     ),
-        ], 
-        #Formatting things
-        className="d-flex flex-column align-items-center", 
-        style={
-            'border': '1px solid', 
-            'padding': '20px',
-            'border-radius': '15px'
-            }
-        )
+            # Uploaded Files or 'no files uploaded' text
+            html.Div(id='file-upload-content'),
+            # Upload progress bar
+            dbc.Progress(id='upload-progress', value=0, max=100, className='upload-progress'),
+            # Additional Inputs
+            html.Div([
+                # Genre Dropdown
+                dcc.Dropdown(
+                    id='genre-dropdown',
+                    options=[
+                        {'label': 'Horror', 'value': 'horror'},
+                        {'label': 'Fantasy', 'value': 'fantasy'},
+                        {'label': 'Romance', 'value': 'romance'},
+                        # Add more genres as needed
+                    ],
+                    placeholder="Select a genre",
+                    className='genre-dropdown'
+                ),
+            ], id='input-options', className='input-options'),
+            # Generate Story Button
+            dbc.Button("Generate Story", color="primary", id='generate-button', className="m-3", disabled=True),
+            # Download Result
+            dcc.Download(id="download-result"),
+            # Download Result Button
+            dbc.Button("Download Result", color="primary", id='download-button', className="m-3"),
+            # Generation Progress bar
+            dbc.Progress(id='generation-progress', value=0, max=100, className='generation-progress'),
+            # Faking the progress at the moment (i think)
+            dcc.Interval(id='generation-interval', interval=2000, n_intervals=0),
+        ], className="d-flex flex-column align-items-center")
+    ])
 ])
+
+# Your callback functions remain unchanged...
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+
 
 ## Functions
 # Update Output
