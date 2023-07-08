@@ -7,8 +7,10 @@ import time
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+## App Layout
 app.layout = html.Div([
     html.Div([
+        # Upload Files element
         dcc.Upload(
             id='upload-data',
             children=html.Div([
@@ -27,9 +29,21 @@ app.layout = html.Div([
             },
             multiple=True
         ),
+        # Uploaded Files or 'no files uploaded' text
         html.Div(id='file-upload-content'),
-
+        # Upload progress bar
+        dbc.Progress(id='upload-progress', 
+                     value=0, 
+                     max=100, 
+                     style={
+                         'width': '75%',
+                         'textAlign': 'center'
+                         }
+                     ),
+        
+        # Additional Inputs
         html.Div([
+            # Genre Dropdown
             dcc.Dropdown(
                 id='genre-dropdown',
                 options=[
@@ -42,21 +56,55 @@ app.layout = html.Div([
                 style={'width': '200px'}
             ),
         ], id='input-options'),
-
-        dbc.Button("Generate", color="primary", id='generate-button', className="m-3", disabled=True),
-
+        
+        # Generate Story Button
+        dbc.Button(
+            "Generate Story", 
+            color="primary", 
+            id='generate-button', 
+            className="m-3", 
+            disabled=True
+            ),
+        
+        #Download Result
         dcc.Download(id="download-result"),
-
-        dbc.Button("Download Result", color="primary", id='download-button', className="m-3"),
-
-        dbc.Progress(id='upload-progress', value=0, max=100, style={'width': '100%'}),
-
-        dbc.Progress(id='generation-progress', value=0, max=100, style={'width': '100%'}),
-        dcc.Interval(id='generation-interval', interval=2000, n_intervals=0),
-    ], className="d-flex flex-column align-items-center", style={'border': '1px solid', 'padding': '20px', 'border-radius': '15px'})
+        
+        # Download Result Button
+        dbc.Button(
+            "Download Result", 
+            color="primary", 
+            id='download-button', 
+            className="m-3"
+            ),
+        
+        # Generation Progress bar
+        dbc.Progress(id='generation-progress', 
+                     value=0,
+                     max=100, 
+                     style={
+                         'width': '75%',
+                         'textAlign': 'center'
+                         }
+                     ),
+        # Fakeing the progress at the moment (i think)
+        dcc.Interval(id='generation-interval', 
+                     interval=2000, 
+                     n_intervals=0
+                     ),
+        ], 
+        #Formatting things
+        className="d-flex flex-column align-items-center", 
+        style={
+            'border': '1px solid', 
+            'padding': '20px',
+            'border-radius': '15px'
+            }
+        )
 ])
 
+## Functions
 # Update Output
+#
 @app.callback(
     Output('file-upload-content', 'children'),
     Output('upload-progress', 'value'),
