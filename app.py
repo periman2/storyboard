@@ -1,4 +1,4 @@
-# import necessary libraries
+import os
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
@@ -29,8 +29,17 @@ app.layout = html.Div([
         html.Div(id='file-upload-content'),
 
         html.Div([
-            # This is a placeholder for your input options
-            # Add your dropdowns and sliders here
+            dcc.Dropdown(
+                id='genre-dropdown',
+                options=[
+                    {'label': 'Horror', 'value': 'horror'},
+                    {'label': 'Fantasy', 'value': 'fantasy'},
+                    {'label': 'Romance', 'value': 'romance'},
+                    # Add more genres as needed
+                ],
+                placeholder="Select a genre",
+                style={'width': '200px'}
+            ),
         ], id='input-options'),
 
         dbc.Button("Generate", color="primary", id='generate-button', className="m-3"),
@@ -41,30 +50,57 @@ app.layout = html.Div([
     ], className="d-flex flex-column align-items-center", style={'border': '1px solid', 'padding': '20px', 'border-radius': '15px'})
 ])
 
+# Update Output
 @app.callback(
     Output('file-upload-content', 'children'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
     State('upload-data', 'last_modified')
 )
-def update_output(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is not None:
-        # Here you can store the files for further use
-        # Make sure to return some information about the files to the frontend
-        pass
+def update_output(contents, filenames, last_modified):
+    if not os.path.exists('temp'):
+        os.makedirs('temp')
 
+    if contents is not None:
+        file_contents = []
+        for content, filename, date in zip(contents, filenames, last_modified):
+            if content is not None:
+                # Save the file to a temporary location
+                data = content.encode('utf-8')
+                filepath = os.path.join('temp', filename)
+                with open(filepath, 'wb') as f:
+                    f.write(data)
+
+                file_contents.append(html.P(filename))
+
+        if file_contents:
+            return file_contents
+
+    return 'No files uploaded.'
+
+
+
+# Backend Function call
 @app.callback(
     Output('download-button', 'color'),
     Output('download-result', 'data'),
-    Input('generate-button', 'n_clicks')
+    Input('generate-button', 'n_clicks'),
+    State('genre-dropdown', 'value')
 )
-def run_backend(n):
-    if n is None:
-        return {'display': 'none'}, 'primary', None
+def run_backend(n_clicks, dropdown_value):
+    if n_clicks is None:
+        return 'primary', None
     else:
-        # Here you can start your backend operation and return its result
-        # return {}, 'success', dict(content="Result", filename="result.txt") when the backend operation is done
-        pass
+        # Call your backend function here
+        # Placeholder code to simulate backend processing
+        import time
+        time.sleep(5)
+        
+        # Simulate generating a result
+        result = {'story': 'This is a test story.'}
+        
+        # Return the result for download
+        return 'success', dict(content=result['story'], filename='result.txt')
 
 if __name__ == '__main__':
     app.run_server(debug=True)
