@@ -10,6 +10,7 @@ from helpers import is_image, is_any_document
 import base64
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+print("App is running!")
 
 ## App Layout
 app.layout = html.Div([
