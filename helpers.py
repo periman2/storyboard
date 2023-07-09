@@ -1,4 +1,3 @@
-
 def is_image(filename: str):
     image_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp']
     return any(filename.lower().endswith(ext) for ext in image_extensions)
