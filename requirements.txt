@@ -6,3 +6,5 @@ python-dotenv
 langchain
 docx2txt
 pdfplumber
+tensorflow
+tensorflow_hub
