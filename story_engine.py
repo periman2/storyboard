@@ -40,7 +40,7 @@ class StoryEngine:
     def addItem(self, item: StoryItem):
         self.store.append(item)
         
-    def once_upon_a_time(self):
+    def once_upon_a_time(self, callback):
         indx = 1
         for item in self.store:
             if item.type == StoryItemType.DOCUMENT:
@@ -63,7 +63,8 @@ class StoryEngine:
             self.story_text += prompt_res
             self.story_progress = indx / store_length
             
-            print("Progress is : " + str(self.story_progress))
+            if callback is not None:
+                callback(self.story_progress)
             
             if indx == store_length:
                 self.story_title = "story" #exectuteTextAIPromptStrict(give_story_title_prompt(self.story_text))

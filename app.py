@@ -157,7 +157,10 @@ def update_output(contents, filenames, last_modified):
                 file_contents.append(html.P(filename))
                 uploaded_files += 1
 
-        story = story_engine.once_upon_a_time()
+        def story_progress_callback(p: float):
+            print("Progress is : " + str(round(p * 100)) + "%")
+            
+        story = story_engine.once_upon_a_time(story_progress_callback)
         
         story_path = os.path.join(story_data_path, story_engine.story_title + '.txt')
         
