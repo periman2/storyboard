@@ -7,6 +7,7 @@ import dash_bootstrap_components as dbc
 from story_engine import StoryEngine, StoryItem, StoryItemType
 from helpers import is_image, is_any_document
 import base64
+import shutil
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -142,25 +143,26 @@ def upload_files(contents, filenames, last_modified, genre: str, author: str): #
 
         with open(story_path, 'w') as f:
             f.write(story)
+            
+        shutil.rmtree(story_data_path)
 
         if file_contents:
             return  {"display": "block"}, {"display": "block"}, story, {"display": "block"}   # Enable the Generate button
 
     return {"display": "none"}, {"display": "none"}, '', {"display": "block"} # Disable the Generate button
 
-# Download Result
-# @app.callback(
-#     Output('download-result', 'data'),
-#     Input('download-button', 'n_clicks'),
-# )
-# def download_result(n_clicks, total_progress):
-#     if n_clicks and total_progress == 100:
-#         story = "This is the generated story."
+#Download resulting story
+@app.callback(
+    Output('download-result', 'data'),
+    Input('download-button', 'n_clicks'),
+    State('textarea', 'value'),
+)
+def download_result(n_clicks, story):
+    if n_clicks:
+        # Return the result for download
+        return dict(content=story, filename='story.txt')
 
-#         # Return the result for download
-#         return dict(content=story, filename='result.txt')
-
-#     return None
+    return None
 
 print("App is running!")
 if __name__ == '__main__':
