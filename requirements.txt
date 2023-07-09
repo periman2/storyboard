@@ -1,2 +1,10 @@
 dash==2.7.0
 dash-bootstrap-components==1.4.1
+google-cloud-aiplatform
+vertexai
+python-dotenv
+langchain
+docx2txt
+pdfplumber
+tensorflow
+tensorflow_hub
