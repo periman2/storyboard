@@ -2,7 +2,6 @@ from typing import Any, List
 from typing import List
 from enum import Enum
 import uuid
-
 from ai_text import exectuteTextAIPrompt, exectuteTextAIPromptStrict, executeDocumentSummarization
 from ai_image import getDescriptionsOfImage
 from prompts import continue_story_prompt, give_story_title_prompt
@@ -102,10 +101,11 @@ class StorySegment:
 
 class StoryEngine:
 
-    def __init__(self, genre: str):
+    def __init__(self, genre: str, author: str):
         self.story_id: str = str(uuid.uuid4())
         self.story_gerne = genre
         self.store: List[StoryItem] = []
+        self.author = author
     
     story_progress: float = 0
     story_text: str = ''
@@ -132,7 +132,7 @@ class StoryEngine:
             elif indx == store_length:
                 time_in_the_story = "ending"
        
-            prompt_res = exectuteTextAIPrompt(continue_story_prompt(item.description, self.story_text, self.story_gerne, time_in_the_story))
+            prompt_res = exectuteTextAIPrompt(continue_story_prompt(item.description, self.story_text, self.story_gerne, time_in_the_story, self.author))
             self.story_segments.append(StorySegment(prompt_res, item.filename, item.description))
                 
             self.story_text += prompt_res

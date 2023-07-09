@@ -48,6 +48,21 @@ h1 {
     padding: 50px;
 }
 
+.upload-data p {
+  margin-top: 14px;
+  font-size: 0.5em;
+}
+
+#textarea {
+  width: 400px;
+  height: 318px;
+  font-size: 0.65em;
+}
+
+.upload-data div {
+  /* margin-top: -24px; */
+}
+
 .file-list {
   margin-top: 10px;
 }
