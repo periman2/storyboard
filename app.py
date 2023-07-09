@@ -212,4 +212,4 @@ def download_result(n_clicks, generation_progress):
     return None
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server( "0.0.0.0", 8050, debug = True)
