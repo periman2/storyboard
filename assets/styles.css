@@ -1,30 +1,54 @@
-/* styles.css */
+/* Global Styles */
 
-.box {
-    box-shadow: 10px 10px;
+body {
+  margin: 15;
+  padding: 10;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+/* Header Styles */
+
+header {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0;
+}
+
+/* Main Content Styles */
+
+.container {
+  margin: 20px;
+}
+
+.input-options {
+  margin-bottom: 10px;
+  width: 60%;
 }
 
 .upload-data {
     width: 100%;
-    height: 60px;
-    line-height: 60px;
+    height: 50px;
+    line-height: 10px;
     border-width: 1px;
     border-style: dashed;
-    border-radius: 5px;
-    text-align: center;
-    margin: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    padding: 50px;
 }
 
-.upload-progress, .generation-progress {
-    width: 70%;
-    padding: 5px;
+.file-list {
+  margin-top: 10px;
 }
 
-.genre-dropdown {
-    width: 200px;
+.progress-bar {
+  margin-top: 20px;
 }
 
-.input-options {
-    padding: 20px;
-    border-radius: 20px;
+.download-button {
+  margin-top: 20px;
 }
+
