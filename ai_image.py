@@ -4,21 +4,14 @@ import tensorflow as tf
 from typing import List
 
 #initializing tensorflow model (singleton for all the server for now)
-initialized = False
-
-def init_model():
-  tf.keras.backend.clear_session()
-  m = tf.keras.Sequential([
-      hub.KerasLayer(IMAGE_MODEL_URL) #TODO: add to config
-  ])
-  m.build([None, IMAGE_MODEL_IMAGE_SIZE, IMAGE_MODEL_IMAGE_SIZE, 3])
+tf.keras.backend.clear_session()
+m = tf.keras.Sequential([
+    hub.KerasLayer(IMAGE_MODEL_URL) #TODO: add to config
+])
+m.build([None, IMAGE_MODEL_IMAGE_SIZE, IMAGE_MODEL_IMAGE_SIZE, 3])
 
 #main functions
 def getDescriptionsOfImage(image_file_path: str, max_desc_number: int = 5):
-  
-  if initialized == False:
-    init_model()
-    initialized = True
 
   image = tf.keras.preprocessing.image.load_img(image_file_path, target_size=(IMAGE_MODEL_IMAGE_SIZE, IMAGE_MODEL_IMAGE_SIZE))
   print(image)
