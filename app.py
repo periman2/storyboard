@@ -10,7 +10,6 @@ from helpers import is_image, is_any_document
 import base64
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-print("App is running!")
 
 ## App Layout
 app.layout = html.Div([
@@ -211,5 +210,6 @@ def download_result(n_clicks, generation_progress):
 
     return None
 
+print("App is running!")
 if __name__ == '__main__':
-    app.run_server( "0.0.0.0", 8050, debug = True)
+    app.run_server( "0.0.0.0", 80, debug = True)
