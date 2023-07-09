@@ -6,10 +6,7 @@ from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 import time
 from story_engine import StoryEngine, StoryItem, StoryItemType
-from typing import List
-from ai_text import exectuteTextAIPrompt, executeDocumentSummarization
-from ai_image import getDescriptionsOfImage
-from helpers import is_doc, is_image, is_pdf, is_txt, is_any_document
+from helpers import is_image, is_any_document
 import base64
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
