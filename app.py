@@ -10,6 +10,7 @@ import base64
 import shutil
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 app.layout = html.Div(
     children=[
@@ -166,4 +167,4 @@ def download_result(n_clicks, story):
 
 print("App is running!")
 if __name__ == '__main__':
-    app.run_server( "0.0.0.0", 80, debug = True)
+    app.run_server( "0.0.0.0", 80, debug = False)

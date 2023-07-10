@@ -18,12 +18,19 @@ header {
   padding: 25px;
 }
 
+.Select-menu-outer {
+  color: #451a48;
+}
+
+.Select-value-label {
+  color:#aaa !important;
+}
+
 h1 {
   margin: 0;
   color: #b1fee3;
   font-size: 50px;
 }
-
 
 /* Main Content Styles */
 
@@ -47,6 +54,7 @@ h1 {
     margin-bottom: 10px;
     padding: 50px;
 }
+
 
 .upload-data p {
   margin-top: 14px;
